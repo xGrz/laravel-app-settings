@@ -1,0 +1,33 @@
+{
+    "name": "xgrz/laravel-app-settings",
+    "description": "Easy handling for app settings in laravel",
+    "license": "MIT",
+    "keywords": [
+        "framework",
+        "laravel",
+        "settings"
+    ],
+    "autoload": {
+        "psr-4": {
+            "xGrz\\LaravelAppSettings\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "xGrz\\LaravelAppSettings\\LaravelAppSettingsServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "Grzegorz Byśkiniewicz",
+            "email": "grzesiek.byskiniewicz@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.2"
+    }
+}
