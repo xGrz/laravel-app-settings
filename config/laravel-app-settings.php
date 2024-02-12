@@ -8,30 +8,28 @@ use xGrz\LaravelAppSettings\Enums\SettingValueType;
  */
 
 return [
-    [
-        'application' => [
-            'name' => [
-                'value' => 'LarApp',
-                'type' => SettingValueType::Text,
-                'description' => 'Application name',
-            ],
-            'use_custom_name' => [
-                'value' => true,
-                'type' => SettingValueType::BooleanType,
-                'description' => 'Application name',
-            ],
+    'application' => [
+        'name' => [
+            'value' => 'LarApp',
+            'type' => SettingValueType::Text,
+            'description' => 'Application name',
         ],
-        'pageLength' => [
-            'default' => [
-                'value' => 50,
-                'type' => SettingValueType::Number,
-                'description' => 'Default items per page'
-            ],
-            'options' => [
-                'value' => [10, 20, 50, 100],
-                'type' => SettingValueType::Selectable,
-                'description' => 'Options for items per page'
-            ]
+        'use_custom_name' => [
+            'value' => true,
+            'type' => SettingValueType::BooleanType,
+            'description' => 'Application name',
         ],
-    ]
+    ],
+    'pageLength' => [
+        'default' => [
+            'value' => 50,
+            'type' => SettingValueType::Number,
+            'description' => 'Default items per page'
+        ],
+        'options' => [
+            'value' => [10, 20, 50, 100],
+            'type' => SettingValueType::Selectable,
+            'description' => 'Options for items per page'
+        ]
+    ],
 ];
