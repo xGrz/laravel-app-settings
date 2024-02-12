@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use xGrz\LaravelAppSettings\Support\Services\SettingsCacheService;
 use xGrz\LaravelAppSettings\Support\Services\SettingsDatabaseService;
+use xGrz\LaravelAppSettings\Support\Services\SettingsService;
 use xGrz\LaravelAppSettings\Support\Services\SyncService;
 
 class SettingsController extends Controller
@@ -15,7 +16,7 @@ class SettingsController extends Controller
     {
         return view('laravel-app-settings::index', [
             'title' => 'Laravel-App-Settings',
-
+            'settings' => SettingsService::get(),
         ]);
     }
 
