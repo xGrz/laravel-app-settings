@@ -16,6 +16,14 @@ class LaravelAppSettingsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         }
+
+        $this->publishes(
+            [
+                __DIR__ . '/../config/laravel-app-settings-config.php' => config_path('laravel-app-settings-config.php'),
+                __DIR__ . '/../config/laravel-app-settings.php' => config_path('laravel-app-settings.php')
+            ],
+            'laravel-app-settings'
+        );
     }
 
 }
