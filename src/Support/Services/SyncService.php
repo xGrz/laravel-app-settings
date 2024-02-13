@@ -17,7 +17,6 @@ class SyncService
         if (!self::isPublished()) {
             throw new LaravelSettingsSourceFileMissingException('Laravel App Setting file missing.');
         }
-
         return self::buildSettingsFromSource();
     }
 
@@ -36,9 +35,9 @@ class SyncService
      */
     private static function buildSettingsFromSource(): array
     {
-        $configSource = config(self::getDefinitionsFileName());
+        $configSource = config(pathinfo(self::getDefinitionsFileName())['filename']);
         if (!$configSource) {
-            throw new LaravelSettingsSourceFileMissingException('Laravel App Setting file missing or contains errors');
+            throw new LaravelSettingsSourceFileMissingException('Laravel App Setting definition file contains errors');
         }
 
         $settings = [];
@@ -93,6 +92,7 @@ class SyncService
                 }
                 $item->save();
             } else {
+                unset($setting['key']);
                 Setting::create($setting);
             }
         }
