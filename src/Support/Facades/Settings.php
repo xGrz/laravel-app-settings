@@ -2,6 +2,8 @@
 
 namespace xGrz\LaravelAppSettings\Support\Facades;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\HigherOrderWhenProxy;
 use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
 use xGrz\LaravelAppSettings\Exceptions\SettingValueValidationException;
 use xGrz\LaravelAppSettings\Models\Setting;
@@ -67,22 +69,30 @@ class Settings
             ->toArray();
     }
 
+    /**
+     * Groups settings by GroupName. When $groupName is provided return only this group settings
+     *
+     * @param string|null $groupName
+     * @param string $model
+     * @return Collection|HigherOrderWhenProxy
+     */
     public static function grouped(?string $groupName = null, string $model = Setting::class)
     {
-        return $model::distinct()
-            ->orderBy('groupName')
+        $settings = collect($model::orderBy('key')
             ->when((bool)$groupName, fn($query) => $query->where('groupName', $groupName))
-            ->get('groupName')
+            ->get()
+            ->makeHidden('created_at', 'updated_at')
+            ->toArray()
+        );
+
+        return $settings
             ->keyBy('groupName')
-            ->map(function ($group) use ($model) {
-                return $model::orderBy('keyName')
-                    ->where('groupName', $group->groupName)
-                    ->get()
-                    ->makeHidden(['created_at', 'updated_at'])
-                    ->toArray();
-            })
-            ->when((bool)$groupName, fn($settingsInGroup) => $settingsInGroup[$groupName]);
+            ->map(function ($group) use ($settings) {
+                return $settings->filter(function ($settingItem) use ($group) {
+                    return $settingItem['groupName'] === $group['groupName'];
+                })->toArray();
+            })->when((bool)$groupName, function ($collection) use ($groupName) {
+                return $collection[$groupName] ?? null;
+            });
     }
-
-
 }
