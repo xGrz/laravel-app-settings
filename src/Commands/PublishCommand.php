@@ -3,26 +3,20 @@
 namespace xGrz\LaravelAppSettings\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use xGrz\LaravelAppSettings\Support\Services\SyncService;
+use xGrz\LaravelAppSettings\Support\Services\ConfigService;
 
 class PublishCommand extends Command
 {
-    protected $signature = 'laravel-app-settings:publish';
+    protected $signature = ConfigService::CONFIG_FILE_PREFIX . ':publish';
     protected $description = 'Publish laravel settings config file';
 
     public function handle()
     {
         $this->newLine();
-
-        $res = $this->call('vendor:publish', ['--tag' => 'laravel-app-settings']);
-        dump($res);
-
+        $this->call('vendor:publish', ['--tag' => 'laravel-app-settings']);
         $this->newLine();
 
-//        return $result
-//            ? Command::SUCCESS
-//            : Command::FAILURE;
+        return Command::SUCCESS;
     }
 }
 

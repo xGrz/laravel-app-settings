@@ -4,7 +4,8 @@ namespace xGrz\LaravelAppSettings\Support\Services;
 
 class ConfigService
 {
-    const CONFIG_FILE_PREFIX = 'laravel1-app-settings';
+    const CONFIG_FILE_PREFIX = 'laravel-app-settings';
+    const ARTISAN_CALLOUT = 'app-settings';
     private string $database_table = 'settings';
     private int $cache_timeout = 86400;
     private string $cache_key = 'LaravelSettings';
