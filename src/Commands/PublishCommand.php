@@ -7,7 +7,7 @@ use xGrz\LaravelAppSettings\Support\Services\ConfigService;
 
 class PublishCommand extends Command
 {
-    protected $signature = ConfigService::CONFIG_FILE_PREFIX . ':publish';
+    protected $signature = ConfigService::ARTISAN_CALLOUT . ':publish';
     protected $description = 'Publish laravel settings config file';
 
     public function handle()
