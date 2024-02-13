@@ -43,7 +43,7 @@ class StoreSettingService
         return $this->setting;
     }
 
-    public function update(array $settingData)
+    public function update(array $settingData): bool
     {
         $updateData = [];
         if (isset($settingData['value'])) {
@@ -70,7 +70,7 @@ class StoreSettingService
                 throw new SettingValueValidationException($e->getMessage());
             }
         }
-        $this->setting->update($updateData);
+        return $this->setting->update($updateData);
     }
 
 }
