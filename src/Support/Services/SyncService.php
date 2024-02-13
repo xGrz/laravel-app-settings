@@ -14,11 +14,21 @@ class SyncService
      */
     public static function getSourceSettings(): array
     {
-        if (!file_exists(config_path('laravel-app-settings.php'))) {
+        if (!self::isPublished()) {
             throw new LaravelSettingsSourceFileMissingException('Laravel App Setting file missing.');
         }
 
         return self::buildSettingsFromSource();
+    }
+
+    public static function isPublished(): bool
+    {
+        return file_exists(config_path(self::getDefinitionsFileName()));
+    }
+
+    public static function getDefinitionsFileName(): string
+    {
+        return ConfigService::CONFIG_FILE_PREFIX . '-definitions.php';
     }
 
     /**
@@ -26,7 +36,7 @@ class SyncService
      */
     private static function buildSettingsFromSource(): array
     {
-        $configSource = config('laravel-app-settings');
+        $configSource = config(self::getDefinitionsFileName());
         if (!$configSource) {
             throw new LaravelSettingsSourceFileMissingException('Laravel App Setting file missing or contains errors');
         }
@@ -64,7 +74,7 @@ class SyncService
         };
     }
 
-    public static function sync()
+    public static function sync(): void
     {
         $sourceSettings = self::getSourceSettings();
         $sourceKeys = (new Collection($sourceSettings))->map(fn($source) => $source['key']);

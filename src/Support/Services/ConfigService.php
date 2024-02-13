@@ -4,13 +4,14 @@ namespace xGrz\LaravelAppSettings\Support\Services;
 
 class ConfigService
 {
+    const CONFIG_FILE_PREFIX = 'laravel1-app-settings';
     private string $database_table = 'settings';
     private int $cache_timeout = 86400;
     private string $cache_key = 'LaravelSettings';
 
-    public function __construct($configFileName = 'laravel-app-settings-config.php')
+    public function __construct(?string $configFileName = null)
     {
-        $this->applyConfiguration($configFileName);
+        $this->applyConfiguration($configFileName ?? self::getConfigFileName());
     }
 
     public function applyConfiguration(string $configFileName): static
@@ -49,6 +50,11 @@ class ConfigService
     public function getDatabaseTable(): string
     {
         return $this->database_table;
+    }
+
+    public static function getConfigFileName(): string
+    {
+        return self::CONFIG_FILE_PREFIX . '-config.php';
     }
 
 }
