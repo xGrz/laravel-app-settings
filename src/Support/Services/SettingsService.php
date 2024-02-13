@@ -2,6 +2,7 @@
 
 namespace xGrz\LaravelAppSettings\Support\Services;
 
+use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
 use xGrz\LaravelAppSettings\Models\Setting;
 
 class SettingsService
@@ -9,6 +10,11 @@ class SettingsService
     protected array $settings = [];
 
     public function __construct()
+    {
+        self::loadSettings();
+    }
+
+    private function loadSettings()
     {
         $this->settings = cache()->remember(
             (new ConfigService())->getCacheKey(),
@@ -25,6 +31,15 @@ class SettingsService
             ->toArray();
     }
 
+    public static function invalidateCache(): void
+    {
+        cache()->forget((new ConfigService())->getCacheKey());
+        app(SettingsService::class)->loadSettings();
+    }
+
+    /**
+     * @throws SettingsKeyNotFoundException
+     */
     public static function get(string $key)
     {
         foreach (app(SettingsService::class)->settings as $settingItem) {
@@ -33,11 +48,12 @@ class SettingsService
             }
         }
 
-        // throw key not exists
+        SettingsKeyNotFoundException::missingKey($key);
     }
 
     public static function getAll()
     {
         return app(SettingsService::class)->settings;
     }
+
 }
