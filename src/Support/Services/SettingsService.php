@@ -19,10 +19,9 @@ class SettingsService
 
     public function loadSettings(): array
     {
-        $config = new ConfigService();
         $this->settings = cache()->remember(
-            $config->getCacheKey(),
-            $config->getCacheTimeout(),
+            Config::getCacheKey(),
+            Config::getCacheTimeout(),
             fn() => self::settingsDirectRead()
         );
         return $this->settings;
