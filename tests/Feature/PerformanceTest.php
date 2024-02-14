@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 use xGrz\LaravelAppSettings\Models\Setting;
 use xGrz\LaravelAppSettings\Support\Facades\Config;
