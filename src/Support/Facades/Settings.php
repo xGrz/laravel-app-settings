@@ -9,7 +9,7 @@ use xGrz\LaravelAppSettings\Support\Services\SettingsService;
  * @method static loadSettings()
  * @method static invalidateCache()
  * @method static getAll()
- * @method static get(mixed $key)
+ * @method static get(string $key)
  */
 class Settings extends Facade
 {
