@@ -2,8 +2,11 @@
 
 namespace xGrz\LaravelAppSettings\Support\Services;
 
+use Illuminate\Support\Collection;
 use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
 use xGrz\LaravelAppSettings\Models\Setting;
+use xGrz\LaravelAppSettings\Support\Facades\Settings;
+use xGrz\LaravelAppSettings\Support\Facades\Config;
 
 class SettingsService
 {
@@ -14,7 +17,7 @@ class SettingsService
         self::loadSettings();
     }
 
-    private function loadSettings(): void
+    public function loadSettings(): array
     {
         $config = new ConfigService();
         $this->settings = cache()->remember(
@@ -22,6 +25,7 @@ class SettingsService
             $config->getCacheTimeout(),
             fn() => self::settingsDirectRead()
         );
+        return $this->settings;
     }
 
     private function settingsDirectRead()
@@ -32,29 +36,36 @@ class SettingsService
             ->toArray();
     }
 
-    public static function invalidateCache(): void
+    public function invalidateCache(): void
     {
-        cache()->forget((new ConfigService())->getCacheKey());
-        app(SettingsService::class)->loadSettings();
+        cache()->forget(Config::getCacheKey());
+        Settings::loadSettings();
     }
 
     /**
      * @throws SettingsKeyNotFoundException
      */
-    public static function get(string $key)
+    public function get(string $key)
     {
-        foreach (app(SettingsService::class)->settings as $settingItem) {
+        foreach ($this->settings as $settingItem) {
             if ($settingItem['key'] === $key) {
                 return $settingItem['value'];
             }
         }
-
         SettingsKeyNotFoundException::missingKey($key);
     }
 
-    public static function getAll()
+    public function getAll(): array
     {
-        return app(SettingsService::class)->settings;
+        return $this->settings;
+    }
+
+    public function getKeyValuePairsCollection(): Collection
+    {
+        return collect($this->settings)
+            ->keyBy('key')
+            ->map(fn($item) => $item['value'])
+            ;
     }
 
 }

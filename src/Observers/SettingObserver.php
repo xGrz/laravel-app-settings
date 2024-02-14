@@ -3,22 +3,23 @@
 namespace xGrz\LaravelAppSettings\Observers;
 
 use xGrz\LaravelAppSettings\Models\Setting;
+use xGrz\LaravelAppSettings\Support\Facades\Settings;
 use xGrz\LaravelAppSettings\Support\Services\SettingsService;
 
 class SettingObserver
 {
     public function created(): void
     {
-        SettingsService::invalidateCache();
+        Settings::invalidateCache();
     }
 
-    public function updated(Setting $setting): void
+    public function updated(): void
     {
-        SettingsService::invalidateCache();
+        Settings::invalidateCache();
     }
 
     public function deleted(): void
     {
-        SettingsService::invalidateCache();
+        Settings::invalidateCache();
     }
 }
