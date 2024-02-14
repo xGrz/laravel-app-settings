@@ -14,7 +14,7 @@ class SettingsService
         self::loadSettings();
     }
 
-    private function loadSettings()
+    private function loadSettings(): void
     {
         $config = new ConfigService();
         $this->settings = cache()->remember(

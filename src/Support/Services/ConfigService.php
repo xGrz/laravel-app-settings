@@ -2,31 +2,41 @@
 
 namespace xGrz\LaravelAppSettings\Support\Services;
 
+use Illuminate\Support\Facades\Artisan;
+
 class ConfigService
 {
-    const CONFIG_FILE_PREFIX = 'laravel-app-settings';
     const ARTISAN_CALLOUT = 'app-settings';
+    private string $config_filename_prefix = 'laravel-app-settings';
     private string $database_table = 'settings';
     private int $cache_timeout = 86400;
     private string $cache_key = 'LaravelSettings';
 
-    public function __construct(?string $configFileName = null)
+
+    public function __construct()
     {
-        $this->applyConfiguration($configFileName ?? self::getConfigFileName());
+        $this->loadConfigurationFromFile();
     }
 
-    public function applyConfiguration(string $configFileName): static
+    public function loadConfigurationFromFile(?string $configFileName = null): static
     {
+        $configFileName = $configFileName ?? self::getConfigFileName();
+
         if (file_exists(config_path($configFileName))) {
-            $this->setConfig(config('laravel-app-settings-config'));
+            $configKey = pathinfo($configFileName)['filename'];
+            $this->setConfiguration(config($configKey));
         }
         return $this;
     }
 
-    public function setConfig(array $config): void
+    public function setConfiguration(array $config): void
     {
         if (isset($config['database_table'])) {
             $this->database_table = $config['database_table'];
+        }
+
+        if (isset($config['config_filename_prefix'])) {
+            $this->config_filename_prefix = $config['config_filename_prefix'];
         }
 
         if (isset($config['cache']['key'])) {
@@ -36,6 +46,16 @@ class ConfigService
         if (isset($config['cache']['timeout'])) {
             $this->cache_timeout = $config['cache']['timeout'];
         }
+    }
+
+    public function getConfigFileName(): string
+    {
+        return $this->config_filename_prefix . '-config.php';
+    }
+
+    public function getDefinitionsFilename(): string
+    {
+        return $this->config_filename_prefix . '-definitions.php';
     }
 
     public function getCacheKey(): string
@@ -48,14 +68,20 @@ class ConfigService
         return $this->cache_timeout;
     }
 
-    public function getDatabaseTable(): string
+    public function getDatabaseTableName(): string
     {
         return $this->database_table;
     }
 
-    public static function getConfigFileName(): string
+    public function getConfigFilenamePrefix(): string
     {
-        return self::CONFIG_FILE_PREFIX . '-config.php';
+        return $this->config_filename_prefix;
     }
+
+    public function publish(): int
+    {
+        return Artisan::call('vendor:publish', ['--tag' => 'laravel-app-settings']);
+    }
+
 
 }

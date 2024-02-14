@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use xGrz\LaravelAppSettings\Enums\SettingValueType;
 use xGrz\LaravelAppSettings\Exceptions\LaravelSettingsSourceFileMissingException;
 use xGrz\LaravelAppSettings\Models\Setting;
+use xGrz\LaravelAppSettings\Support\Facades\Config;
 
 class SyncService
 {
@@ -22,20 +23,15 @@ class SyncService
 
     public static function isPublished(): bool
     {
-        return file_exists(config_path(self::getDefinitionsFileName()));
-    }
-
-    public static function getDefinitionsFileName(): string
-    {
-        return ConfigService::CONFIG_FILE_PREFIX . '-definitions.php';
+        return file_exists(config_path(Config::getDefinitionsFilename()));
     }
 
     /**
      * @throws LaravelSettingsSourceFileMissingException
      */
-    private static function buildSettingsFromSource(): array
+    public static function buildSettingsFromSource(): array
     {
-        $configSource = config(pathinfo(self::getDefinitionsFileName())['filename']);
+        $configSource = config(pathinfo(Config::getDefinitionsFilename())['filename']);
         if (!$configSource) {
             throw new LaravelSettingsSourceFileMissingException('Laravel App Setting definition file contains errors');
         }
@@ -73,6 +69,9 @@ class SyncService
         };
     }
 
+    /**
+     * @throws LaravelSettingsSourceFileMissingException
+     */
     public static function sync(): void
     {
         $sourceSettings = self::getSourceSettings();
@@ -92,7 +91,6 @@ class SyncService
                 }
                 $item->save();
             } else {
-                unset($setting['key']);
                 Setting::create($setting);
             }
         }

@@ -10,7 +10,7 @@ use xGrz\LaravelAppSettings\Models\Setting;
 use xGrz\LaravelAppSettings\Support\Services\SettingsService;
 use xGrz\LaravelAppSettings\Support\Services\StoreSettingService;
 
-class Settings
+class LaravelAppSettings
 {
 
     /**

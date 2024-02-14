@@ -4,10 +4,8 @@ namespace xGrz\LaravelAppSettings\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
-use xGrz\LaravelAppSettings\Support\Services\SettingsCacheService;
-use xGrz\LaravelAppSettings\Support\Services\SettingsDatabaseService;
-use xGrz\LaravelAppSettings\Support\Services\SettingsService;
-use xGrz\LaravelAppSettings\Support\Services\SyncService;
+use xGrz\LaravelAppSettings\Models\Setting;
+use xGrz\LaravelAppSettings\Support\Facades\LaravelAppSettings;
 
 class SettingsController extends Controller
 {
@@ -16,21 +14,15 @@ class SettingsController extends Controller
     {
         return view('laravel-app-settings::index', [
             'title' => 'Laravel-App-Settings',
-            'settings' => SettingsService::get(),
+            'settings' => Setting::all(),
         ]);
     }
 
     public function test()
     {
-        //SettingsDatabaseService::get('pageLength.default');
-        SettingsCacheService::get('pageLength.default');
-
-//        SyncService::sync();
-//        dump( SettingsDatabaseService::get('pageLength.default') );
-//        SettingsDatabaseService::set('pageLength.default', '20');
-//        dd(
-//            SettingsCacheService::get('pageLength.default'),
-//            SettingsDatabaseService::get('pageLength.default')
-//        );
+        dump(
+            LaravelAppSettings::grouped(),
+            LaravelAppSettings::grouped('application')
+        );
     }
 }
