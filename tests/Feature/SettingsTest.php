@@ -319,4 +319,24 @@ class SettingsTest extends TestCase
         Settings::set('nonExistingGroup.withNonExistingKey', 'abc');
     }
 
+    public function test_global_helper_function_settings_is_registered()
+    {
+        $this->assertTrue(
+            function_exists('setting'),
+            'Global helper `settings` is not registered. Try to run composer `dump-autoload`'
+        );
+    }
+
+    public function test_global_helper_function_settings_returns_value()
+    {
+        $settingData = self::getSettingByType(SettingValueType::Number);
+        if (!$settingData) return;
+
+        $value = setting($settingData['key']);
+        $this->assertEquals(
+            $settingData['value'],
+            $value,
+        );
+    }
+
 }
