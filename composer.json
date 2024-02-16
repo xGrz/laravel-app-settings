@@ -9,7 +9,10 @@
     "autoload": {
         "psr-4": {
             "xGrz\\LaravelAppSettings\\": "src/"
-        }
+        },
+        "files": [
+            "src/Support/GlobalHelpers/setting.php"
+        ]
     },
     "extra": {
         "laravel": {
@@ -27,6 +30,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": "^8.2"
+        "php": "^8.1"
     }
 }
