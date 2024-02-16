@@ -38,6 +38,11 @@ class SettingsService
     public function invalidateCache(): void
     {
         cache()->forget(Config::getCacheKey());
+    }
+
+    public function refreshCache(): void
+    {
+        self::invalidateCache();
         Settings::loadSettings();
     }
 

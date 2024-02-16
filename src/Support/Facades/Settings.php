@@ -8,8 +8,9 @@ use xGrz\LaravelAppSettings\Support\Services\SettingsService;
 /**
  * @method static loadSettings()
  * @method static invalidateCache()
- * @method static getAll()
+ * @method static refreshCache()
  * @method static get(string $key)
+ * @method static getAll()
  */
 class Settings extends Facade
 {

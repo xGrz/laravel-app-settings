@@ -19,7 +19,7 @@ class SettingsTest extends TestCase
         SyncService::sync();
     }
 
-    private function getSettingByType(SettingValueType $type): array
+    public static function getSettingByType(SettingValueType $type): array
     {
         return Setting::where('type', $type)
             ->first(['key', 'value', 'type'])

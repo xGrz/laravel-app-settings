@@ -10,16 +10,16 @@ class SettingObserver
 {
     public function created(): void
     {
-        Settings::invalidateCache();
+        Settings::refreshCache();
     }
 
     public function updated(): void
     {
-        Settings::invalidateCache();
+        Settings::refreshCache();
     }
 
     public function deleted(): void
     {
-        Settings::invalidateCache();
+        Settings::refreshCache();
     }
 }

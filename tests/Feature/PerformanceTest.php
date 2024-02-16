@@ -21,7 +21,7 @@ class PerformanceTest extends TestCase
     public function test_get_all_settings_from_db_performance_with_one_query()
     {
         $this->expectsDatabaseQueryCount(1);
-        Settings::invalidateCache();
+        Settings::refreshCache();
         Settings::getAll();
         Settings::get('application.name');
     }
