@@ -5,7 +5,7 @@ namespace xGrz\LaravelAppSettings\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use xGrz\LaravelAppSettings\Enums\SettingValueType;
-use xGrz\LaravelAppSettings\Support\Services\ConfigService;
+use xGrz\LaravelAppSettings\Support\Facades\Config;
 
 class Setting extends Model
 {
@@ -14,7 +14,7 @@ class Setting extends Model
 
     public function getTable(): string
     {
-        return (new ConfigService)->getDatabaseTableName();
+        return Config::getDatabaseTableName();
     }
 
     protected function value(): Attribute
@@ -72,27 +72,5 @@ class Setting extends Model
                 return $value;
         }
     }
-
-
-//    public function checkValueType(SettingValueType $type): bool
-//    {
-//        if ($this->type === SettingValueType::Text) {
-//            return gettype($this->value) === 'string';
-//        }
-//
-//        if ($this->type === SettingValueType::Number) {
-//            return is_numeric($this->value);
-//        }
-//
-//        if ($this->type === SettingValueType::Selectable) {
-//            return is_array($this->value());
-//        }
-//
-//        if ($this->type === SettingValueType::BooleanType) {
-//            return in_array(['0', '1', 1, 0, true, false], $this->value);
-//        }
-//        return false;
-//    }
-
 
 }

@@ -1,9 +1,6 @@
 @extends('laravel-app-settings::layout')
 
 @section('content')
-    <a href="{{ route('laravel-app-settings.test') }}">Test</a>
-
-
     <table class="w-full">
         <thead>
         <tr class="bg-gray-200">
@@ -28,8 +25,8 @@
                     @endif
                 </td>
                 <td>
-                    <a href="/settings/{{ $setting['id'] }}"
-                       class="text-blue-400 hover:text-blue-600  mx-2">Change</a>
+                    <a href="{{ route('settings.edit', $setting['id']) }}"
+                       class="text-blue-400 hover:text-blue-600 mx-2">Change</a>
                 </td>
             </tr>
         @endforeach
@@ -37,7 +34,7 @@
     </table>
 
     @empty($settings)
-        <strong>There is no settings provided</strong>
+        <strong>There is no any settings provided</strong>
     @endempty
 
 @endsection

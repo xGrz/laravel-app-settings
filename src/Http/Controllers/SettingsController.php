@@ -3,13 +3,14 @@
 namespace xGrz\LaravelAppSettings\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use xGrz\LaravelAppSettings\Http\Requests\UpdateSettingRequest;
 use xGrz\LaravelAppSettings\Models\Setting;
-use xGrz\LaravelAppSettings\Support\Facades\LaravelAppSettings;
+use xGrz\LaravelAppSettings\Support\Facades\Settings as SettingFacade;
 
 class SettingsController extends Controller
 {
-
     public function index(): View
     {
         return view('laravel-app-settings::index', [
@@ -18,11 +19,18 @@ class SettingsController extends Controller
         ]);
     }
 
-    public function test()
+    public function edit(Setting $setting): View
     {
-        dump(
-            LaravelAppSettings::grouped(),
-            LaravelAppSettings::grouped('application')
-        );
+        return view('laravel-app-settings::edit', [
+            'title' => 'Edit key',
+            'setting' => $setting->toArray()
+        ]);
     }
+
+    public function update(UpdateSettingRequest $request, Setting $setting): RedirectResponse
+    {
+        SettingFacade::update($setting->key, $request->validated());
+        return to_route('settings.index');
+    }
+
 }

@@ -5,13 +5,14 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use xGrz\LaravelAppSettings\Enums\SettingValueType;
 use xGrz\LaravelAppSettings\Models\Setting;
+use xGrz\LaravelAppSettings\Support\Facades\Config;
 
 return new class extends Migration {
 
 
     public function up(): void
     {
-        Schema::create((new Setting())->getTable(), function (Blueprint $table) {
+        Schema::create(Config::getDatabaseTableName(), function (Blueprint $table) {
             $table->id();
             $table->string('groupName');
             $table->string('keyName');
@@ -27,6 +28,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists((new Setting())->getTable());
+        Schema::dropIfExists(Config::getDatabaseTableName());
     }
 };

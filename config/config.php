@@ -25,4 +25,5 @@ return [
         /* Cache key to store data. Change only when you have a conflict with other modules */
         'key' => 'LaravelSettings'
     ],
+
 ];
