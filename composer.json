@@ -3,7 +3,6 @@
     "description": "Easy handling for app settings in laravel",
     "license": "MIT",
     "keywords": [
-        "framework",
         "laravel",
         "settings"
     ],

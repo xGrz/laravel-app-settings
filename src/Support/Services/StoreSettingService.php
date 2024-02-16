@@ -25,24 +25,26 @@ class StoreSettingService
         return new self($keyIdent);
     }
 
-    private function loadByKey(string $key): ?Setting
+    private function loadByKey(string $key): void
     {
         $this->setting = Setting::where('key', $key)->first();
         if (!$this->setting) {
             SettingsKeyNotFoundException::missingKey($key);
         }
-        return $this->setting;
     }
 
-    private function loadById(int $id)
+    private function loadById(int $id): void
     {
         $this->setting = Setting::find($id);
         if (!$this->setting) {
             SettingsKeyNotFoundException::missingKey($id);
         }
-        return $this->setting;
     }
 
+
+    /**
+     * @throws SettingValueValidationException
+     */
     public function update(array $settingData): bool
     {
         $updateData = [];
