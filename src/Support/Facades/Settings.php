@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 use xGrz\LaravelAppSettings\Exceptions\SettingValueValidationException;
 use xGrz\LaravelAppSettings\Models\Setting;
+use xGrz\LaravelAppSettings\Support\Helpers\SettingResolver;
 use xGrz\LaravelAppSettings\Support\Services\SettingsGroupingService;
 use xGrz\LaravelAppSettings\Support\Services\SettingsService;
 use xGrz\LaravelAppSettings\Support\Services\StoreSettingService;
@@ -45,9 +46,9 @@ class Settings extends Facade
      * @return bool|null
      * @throws SettingValueValidationException
      */
-    public static function update(string $key, array $data): ?bool
+    public static function update(string|int|Setting $setting, array $data): ?bool
     {
-        return (new StoreSettingService($key))->update($data);
+        return (new StoreSettingService(SettingResolver::resolve($setting)))->update($data);
     }
 
     /**
@@ -62,5 +63,6 @@ class Settings extends Facade
     {
         return SettingsGroupingService::grouped($groupName, $model);
     }
+
 
 }

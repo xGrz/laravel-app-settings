@@ -8,39 +8,16 @@ use xGrz\LaravelAppSettings\Models\Setting;
 use xGrz\LaravelAppSettings\Http\Requests\UpdateSettingRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use xGrz\LaravelAppSettings\Support\Helpers\SettingResolver;
 
 class StoreSettingService
 {
     protected ?Setting $setting;
 
-    public function __construct(int|string $keyIdent)
+    public function __construct(int|string|Setting $item)
     {
-        is_int($keyIdent)
-            ? self::loadById($keyIdent)
-            : self::loadByKey($keyIdent);
+        $this->setting = SettingResolver::resolve($item);
     }
-
-    public static function find(int|string $keyIdent): StoreSettingService
-    {
-        return new self($keyIdent);
-    }
-
-    private function loadByKey(string $key): void
-    {
-        $this->setting = Setting::where('key', $key)->first();
-        if (!$this->setting) {
-            SettingsKeyNotFoundException::missingKey($key);
-        }
-    }
-
-    private function loadById(int $id): void
-    {
-        $this->setting = Setting::find($id);
-        if (!$this->setting) {
-            SettingsKeyNotFoundException::missingKey($id);
-        }
-    }
-
 
     /**
      * @throws SettingValueValidationException
