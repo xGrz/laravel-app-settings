@@ -14,6 +14,9 @@ class StoreSettingService
 {
     protected ?Setting $setting;
 
+    /**
+     * @throws SettingsKeyNotFoundException
+     */
     public function __construct(int|string|Setting $item)
     {
         $this->setting = SettingResolver::resolve($item);

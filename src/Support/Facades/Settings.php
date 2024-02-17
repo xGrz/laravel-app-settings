@@ -4,6 +4,7 @@ namespace xGrz\LaravelAppSettings\Support\Facades;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
+use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
 use xGrz\LaravelAppSettings\Exceptions\SettingValueValidationException;
 use xGrz\LaravelAppSettings\Models\Setting;
 use xGrz\LaravelAppSettings\Support\Helpers\SettingResolver;
@@ -32,8 +33,9 @@ class Settings extends Facade
      * @param mixed $value
      * @return bool
      * @throws SettingValueValidationException
+     * @throws SettingsKeyNotFoundException
      */
-    public static function set(string $key, mixed $value): bool
+    public static function set(string|int|Setting $key, mixed $value): bool
     {
         return (new StoreSettingService($key))->update(['value' => $value]);
     }
@@ -45,10 +47,11 @@ class Settings extends Facade
      * @param array $data
      * @return bool|null
      * @throws SettingValueValidationException
+     * @throws SettingsKeyNotFoundException
      */
     public static function update(string|int|Setting $setting, array $data): ?bool
     {
-        return (new StoreSettingService(SettingResolver::resolve($setting)))->update($data);
+        return (new StoreSettingService($setting))->update($data);
     }
 
     /**
