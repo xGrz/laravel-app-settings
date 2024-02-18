@@ -5,7 +5,6 @@ namespace xGrz\LaravelAppSettings\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
@@ -32,17 +31,20 @@ class SettingsController extends Controller
         ]);
     }
 
-
     public function update(UpdateSettingRequest $request, Setting $setting): RedirectResponse
     {
         try {
-            Settings::update($setting, $request->validated());
+            $updated = Settings::update($setting, $request->validated());
         } catch (SettingsKeyNotFoundException $e) {
             throw new ModelNotFoundException($e->getMessage());
         } catch (SettingValueValidationException $e) {
             abort(Response::HTTP_NOT_ACCEPTABLE, $e->getMessage());
         }
-        return to_route('settings.index');
+        return to_route('settings.index')
+            ->with($updated
+                ? ['updated' => 'Updated']
+                : ['notChanged' => 'Nothing was changed']
+            );
     }
 
 }
