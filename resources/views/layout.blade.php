@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
-<body style="max-width: 1000px; margin: 0 auto;">
+<body style="max-width: 1100px; margin: 0 auto;">
 <header>
     <h1 class="text-3xl py-4">{{ $title ?? 'Page title' }}</h1>
 </header>
