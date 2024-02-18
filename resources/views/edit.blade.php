@@ -3,9 +3,6 @@
 
 @section('content')
 
-    @if($errors->any())
-        {{ implode('', $errors->all('<div>:message</div>')) }}
-    @endif
     <form method="POST" action="{{ route('settings.update', $setting['id']) }}" class="bg-white shadow p-6 rounded">
         @csrf
         <input name="_method" type="hidden" value="PATCH">
@@ -38,6 +35,9 @@
                     @include('laravel-app-settings::partials._boolean')
                     @break
             @endswitch
+            @error('value')
+            <div class="text-red-500">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-4">
@@ -48,6 +48,10 @@
                 rows="3"
                 class="mt-1 p-2 border rounded w-full"
             >{{ $setting['description'] }}</textarea>
+            @error('description')
+            <div class="text-red-500">{{ $message }}</div>
+            @enderror
+
         </div>
 
 
