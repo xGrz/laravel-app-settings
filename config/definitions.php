@@ -20,7 +20,7 @@ return [
             'description' => 'Application name',
         ],
     ],
-    'pageLength' => [
+    'pageSize' => [
         'default' => [
             'value' => 50,
             'type' => SettingValueType::Number,
