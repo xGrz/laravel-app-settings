@@ -102,16 +102,40 @@ use xGrz\LaravelAppSettings\Enums\SettingValueType;
 - **SettingValueType::BooleanType** - true/false values only,
 
 ### 2.2.2. `value` prop
-Define initial value for key
+Define initial value for key depends on declared value type (string, int, float, array)
 
 ### 2.2.3. `description` prop
 String value that describes defined key. Optional, but recommended.
 
 
+## 2.3. Adding/remove settings entries 
 
+Just add / remove any group or key-name(s) in your `app/config/laravel-app-settings-definitions.php`.
+After changes are made just run in console:
 
+```
+php artisan app-settings:sync
+```
 
+# 3. Managing settings in your code.
 
+> Each setting has its own key (mentioned in 2.1).
+
+# 3.1. Get value for setting
+Let's say you want to get `application.name` value. In your code you can call:
+
+```
+use xGrz\LaravelAppSettings\Support\Facades\Settings;
+
+// ...
+Settings::get('application.name`);
+```
+
+or use global helper function:
+
+```
+setting('application.name');
+```
 
 
 
