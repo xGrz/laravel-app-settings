@@ -15,10 +15,12 @@ class UpdateSettingRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        if ($this->value === null) {
+        if ($this->request->has('value') && $this->value === null) {
             match ($this->setting->type) {
                 SettingValueType::Selectable => $this->merge(['value' => []]),
                 SettingValueType::BooleanType => $this->merge(['value' => false]),
+                SettingValueType::Number => $this->merge(['value' => 0]),
+                SettingValueType::Text => $this->merge(['value' => '']),
             };
         }
     }
@@ -37,7 +39,7 @@ class UpdateSettingRequest extends FormRequest
             SettingValueType::Text => ['nullable', 'string'],
             SettingValueType::Number => ['nullable', 'numeric'],
             SettingValueType::BooleanType => ['required', 'boolean'],
-            SettingValueType::Selectable => ['array']
+            SettingValueType::Selectable => ['array'],
         };
     }
 

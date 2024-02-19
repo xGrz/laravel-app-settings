@@ -18,6 +18,7 @@ use xGrz\LaravelAppSettings\Support\Services\StoreSettingService;
  * @method static refreshCache()
  * @method static get(string $key)
  * @method static getAll()
+ * @method static all()
  */
 class Settings extends Facade
 {

@@ -19,7 +19,8 @@ class SettingsController extends Controller
     {
         return view('laravel-app-settings::index', [
             'title' => 'Laravel-App-Settings',
-            'settings' => Setting::all(),
+            'settings' => Settings::all(),
+            'grouped' => Settings::getGroup()
         ]);
     }
 

@@ -4,6 +4,8 @@ namespace xGrz\LaravelAppSettings\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use xGrz\LaravelAppSettings\Enums\SettingValueType;
 use xGrz\LaravelAppSettings\Support\Facades\Config;
 
@@ -11,6 +13,7 @@ class Setting extends Model
 {
     protected $guarded = ['id', 'key'];
     protected $casts = ['type' => SettingValueType::class];
+    protected $appends = ['viewableValue'];
 
     public function getTable(): string
     {
@@ -71,6 +74,25 @@ class Setting extends Model
             default:
                 return $value;
         }
+    }
+
+    public function getViewableValueAttribute(): string
+    {
+        if (empty($this->type)) return $this->value;
+        return match ($this->type) {
+            SettingValueType::Text => Str::words($this->value, 3),
+            SettingValueType::Number => (string)$this->value,
+            SettingValueType::Selectable => self::cutArray($this->value),
+            SettingValueType::BooleanType => $this->value ? __('On') : __('Off'),
+        };
+    }
+
+    private function cutArray(array|Collection $values, int $limit = 3): string
+    {
+        if (is_array($values)) $values = collect($values);
+        $output = collect($values)->take($limit)->join(', ');
+        $suffix = collect($values)->count() > $limit ? '...' : '';
+        return $output . $suffix;
     }
 
 }

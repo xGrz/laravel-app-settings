@@ -52,7 +52,8 @@ class StoreSettingService
                 throw new SettingValueValidationException($e->getMessage());
             }
         }
-        return $this->setting->update($updateData);
+        $this->setting->update($updateData);
+        return $this->setting->wasChanged();
     }
 
 }

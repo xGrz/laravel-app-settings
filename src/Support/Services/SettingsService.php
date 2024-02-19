@@ -64,6 +64,11 @@ class SettingsService
         return $this->settings;
     }
 
+    public function all()
+    {
+        return Setting::orderBy('key')->get();
+    }
+
     public function getKeyValuePairsCollection(): Collection
     {
         return collect($this->settings)
