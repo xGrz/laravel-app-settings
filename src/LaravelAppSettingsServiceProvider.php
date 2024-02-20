@@ -42,8 +42,10 @@ class LaravelAppSettingsServiceProvider extends ServiceProvider
         Setting::observe(SettingObserver::class);
 
 
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-app-settings');
+        if (Config::shouldExposeUI()) {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-app-settings');
+        }
 
     }
 

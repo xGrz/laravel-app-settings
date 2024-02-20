@@ -14,6 +14,7 @@ use xGrz\LaravelAppSettings\Support\Services\ConfigService;
  * @method static getCacheKey()
  * @method static setConfiguration(string[]|array[] $testConfig)
  * @method static publish()
+ * @method static shouldExposeUI()
  */
 
 class Config extends Facade

@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Artisan;
 class ConfigService
 {
     const ARTISAN_CALLOUT = 'app-settings';
-    private string $config_filename_prefix = 'laravel-app-settings';
+    const CONFIG_FILE_PREFIX = 'laravel-app-settings';
+    private bool $expose_ui = false;
     private string $database_table = 'settings';
     private int $cache_timeout = 86400;
     private string $cache_key = 'LaravelSettings';
@@ -35,8 +36,8 @@ class ConfigService
             $this->database_table = $config['database_table'];
         }
 
-        if (isset($config['config_filename_prefix'])) {
-            $this->config_filename_prefix = $config['config_filename_prefix'];
+        if (isset($config['expose_ui'])) {
+            $this->expose_ui = $config['expose_ui'];
         }
 
         if (isset($config['cache']['key'])) {
@@ -50,12 +51,12 @@ class ConfigService
 
     public function getConfigFileName(): string
     {
-        return $this->config_filename_prefix . '-config.php';
+        return self::CONFIG_FILE_PREFIX . '-config.php';
     }
 
     public function getDefinitionsFilename(): string
     {
-        return $this->config_filename_prefix . '-definitions.php';
+        return self::CONFIG_FILE_PREFIX . '-definitions.php';
     }
 
     public function getCacheKey(): string
@@ -68,15 +69,16 @@ class ConfigService
         return $this->cache_timeout;
     }
 
+    public function shouldExposeUI(): bool
+    {
+        return $this->expose_ui;
+    }
+
     public function getDatabaseTableName(): string
     {
         return $this->database_table;
     }
 
-    public function getConfigFilenamePrefix(): string
-    {
-        return $this->config_filename_prefix;
-    }
 
     public function publish(): int
     {

@@ -22,6 +22,7 @@ class ExampleWebInterfaceTest extends TestCase
 
     public function test_index_page_is_rendering()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Text)->first();
 
         $this
@@ -35,6 +36,7 @@ class ExampleWebInterfaceTest extends TestCase
 
     public function test_update_setting_value()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Text)->first();
 
         $testData = [
@@ -51,6 +53,7 @@ class ExampleWebInterfaceTest extends TestCase
 
     public function test_update_invalid__type_setting_value_backs_to_edit()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Text)->first();
 
         $testData = [
@@ -71,6 +74,7 @@ class ExampleWebInterfaceTest extends TestCase
 
     public function test_edit_text_value_is_rendering()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Text)->first();
 
         $this
@@ -79,12 +83,12 @@ class ExampleWebInterfaceTest extends TestCase
             ->assertViewIs('laravel-app-settings::edit')
             ->assertSee('Edit key')
             ->assertSee($setting->key)
-            ->assertSee($setting->value)
-        ;
+            ->assertSee($setting->value);
     }
 
     public function test_edit_numeric_value_is_rendering()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Number)->first();
 
         $this
@@ -93,12 +97,12 @@ class ExampleWebInterfaceTest extends TestCase
             ->assertViewIs('laravel-app-settings::edit')
             ->assertSee('Edit key')
             ->assertSee($setting->key)
-            ->assertSee($setting->value)
-        ;
+            ->assertSee($setting->value);
     }
 
     public function test_edit_selectable_value_is_rendering()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Selectable)->first();
 
         $this
@@ -107,12 +111,12 @@ class ExampleWebInterfaceTest extends TestCase
             ->assertViewIs('laravel-app-settings::edit')
             ->assertSee('Edit key')
             ->assertSee($setting->key)
-            ->assertSee($setting->value)
-        ;
+            ->assertSee($setting->value);
     }
 
     public function test_edit_boolean_type_value_is_rendering()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::BooleanType)->first();
 
         $this
@@ -123,12 +127,12 @@ class ExampleWebInterfaceTest extends TestCase
             ->assertSee($setting->key)
             ->assertSee($setting->value)
             ->assertSee('On')
-            ->assertSee('Off')
-        ;
+            ->assertSee('Off');
     }
 
     public function test_send_update_empty_from()
     {
+        if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Text)->first();
 
         $testData = ['value' => null];

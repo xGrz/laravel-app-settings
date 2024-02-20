@@ -10,7 +10,7 @@ class ConfigTest extends TestCase
     public function test_config_file_name_generator()
     {
         $this->assertEquals(
-            Config::getConfigFilenamePrefix() . '-config.php',
+            'laravel-app-settings-config.php',
             Config::getConfigFilename(),
         );
     }
@@ -18,7 +18,7 @@ class ConfigTest extends TestCase
     public function test_definition_file_name_generator()
     {
         $this->assertEquals(
-            Config::getConfigFilenamePrefix() . '-definitions.php',
+            'laravel-app-settings-definitions.php',
             Config::getDefinitionsFileName(),
         );
     }
@@ -28,7 +28,6 @@ class ConfigTest extends TestCase
         $this->assertEquals('settings', Config::getDatabaseTableName());
         $this->assertEquals(86400, Config::getCacheTimeout());
         $this->assertEquals('LaravelSettings', Config::getCacheKey());
-        $this->assertEquals('laravel-app-settings', Config::getConfigFilenamePrefix());
     }
 
     public function test_custom_configuration_table_name()

@@ -7,10 +7,10 @@ return [
     'database_table' => 'settings',
 
     /*
-     * Config file name published in /config directory.
-     * This is prefix only. Suffix (-config|-definitions) will be added automatically
+     * Expose example user interface with blade views for managing settings
+     * This route is not protected with middlewares. Do not use it in prod.
      */
-    'config_filename_prefix' => 'laravel-app-settings',
+    'expose_ui' => false,
 
     /*
      * Cache configuration
