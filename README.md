@@ -87,6 +87,30 @@ Settings::update('application.name`, [
 ```
 
 Out of the box you can use our FormRequest to validate incoming update data in your controller.
+Validation rules are dynamic and depends on setting type.
+
+In your controller on update method:
+
+```
+use Illuminate\Http\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use xGrz\LaravelAppSettings\Http\Requests\UpdateSettingRequest;
+use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
+use xGrz\LaravelAppSettings\Exceptions\SettingValueValidationException;
+use xGrz\LaravelAppSettings\Models\Setting;
+
+public function update(UpdateSettingRequest $request, Setting $setting)
+    {
+        try {
+            $updated = Settings::update($setting, $request->validated());
+        } catch (SettingsKeyNotFoundException $e) {
+            throw new ModelNotFoundException($e->getMessage());
+        } catch (SettingValueValidationException $e) {
+            abort(Response::HTTP_NOT_ACCEPTABLE, $e->getMessage());
+        }
+        return ...
+    }
+```
 
 ## 4. Add/remove new settings
 
