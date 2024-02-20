@@ -3,18 +3,18 @@
 Easy to use and high performance laravel module for handling settings for app.
 Optimized with 1 hit cache/db each time app is reloaded.
 
-Package handles default settings in config file so you can simply copy config file to second project with all settings
+Package handles default settings in config file, so you can simply copy config file to second project with all settings
 already set.
 
 ## 1. Installation
 
-### 1.1. Install package via composer:
+**Install package via composer**
 
 ```
 composer require xgrz/laravel-app-settings
 ```
 
-### 1.2. Publish configuration:
+**Publish configuration**
 
 ```
 php artisan app-settings:publish
@@ -25,134 +25,157 @@ After publishing, you will find 2 config files in your `app/config` directory.
 - `laravel-app-settings-config` contains package configuration
 - `laravel-app-settings-definitions` contains settings definitions
 
-#### Set database table name (before migration)
+**Set database table name (before next step)**
 
-Please fill free to update `laravel-app-settings-config` -> `database_table` in case on conflict with your database
+Fill free to update `app/config/laravel-app-settings-config.php` -> `database_table` in case on conflict with your database
 schema.
 Default table name is set to `settings`.
 
-### 1.3. Run migration
-
-Run migrations:
-
+**Run migration**
 ```
 php artisan migrate
 ```
 
-### 1.4 Config and sync settings
+**Config and sync settings**
 
-Edit your `laravel-app-settings-definitions` file with your own settings (see #3 Defining settings).
-After all changes are maid you have to run
+Edit your `app/config/laravel-app-settings-definitions` file with your own settings.
+After all changes are made you have to run sync command in terminal
 
 ``` 
 php artisan app-settings:sync 
 ```
 
-# 2. Defining settings
+## 2. Use settings in code
+In this example lets assume, that setting key `application.key` is already exists.
 
-## 2.1. Introduction
+**Preferred way to get your setting value is use global helper function:**
+> setting('*application.name*');
 
-In your config file `app/config/laravel-app-settings-definitions.php` you will keep all initial settings.
-To keep it clean, definitions are divided into groups (1st. level) and setting names (2nd level). Third level
-is definition of setting type. Pair of `group` and `key-name` joined with `.` is setting key, which is automatically
-generated in mysql.
+Function `setting($param);` accepts as a parameter only setting key.
+
+**Second way to get your value is use Settings facade**
+> use xGrz\LaravelAppSettings\Support\Facades\Settings;
+> 
+> Settings::get('application.name`);
+
+This facade method accepts setting key as parameter only.
+
+**Missing key behavior**
+> **If key doesn't exist** 
+> 
+> xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException
+> 
+> will be thrown.
+
+## 3. Modify settings
+
+If you want to modify only setting value the simplest way is use facade
+
+> use xGrz\LaravelAppSettings\Support\Facades\Settings;
+>
+> Settings::set('application.name`, 'SOME NEW VALUE');
+
+In case of managing settings you may want to change description too.
+
+```
+use xGrz\LaravelAppSettings\Support\Facades\Settings;
+
+Settings::update('application.name`, [
+    'value' => 'SOME NEW VALUE',
+    'description' => 'New setting key description'
+]);
+```
+
+Out of the box you can use our FormRequest to validate incoming update data in your controller.
+
+## 4. Add/remove new settings
+
+### 4.1 Add settings
+
+Go to `app/config/laravel-app-settings-definitions.php`.
+In this config file you will see tree of defined groups and settings.
+You are allowed to add new groups and key-names. You can always remove key-name/group from definition file at any time.
+
+After changes are made in definitions file you have to always sync by using artisan command:
+> php artisan app-settings:sync
+
+**Define new settings group**
+Open definitions file and add new array item, for example lets sey we want to add new group named `seo`:
 
 ```
 return [
-    'application' => [
-        'name' => [
-            // ...
-        ],
-        'use_custom_name' => [
-            // ...
-        ],
-    ],
-    'page' => [
-        'size' => [
-            // ...
-        ]
+    // some existsing settings
+    'seo' => [
+        // key-names for seo group.
     ]
-```
-
-In that case you have defined three keys:
-
-- `application.name`
-- `application.use_custom_name`
-- `page.size`
-
-## 2.2. Defining key props
-
-```
-[
-    'type' => Enum SettingValueType,
-    'value' => 'Initial value of defined key',
-    'description' => 'Setting description',
 ]
 ```
 
-### 2.2.1. `type` prop
-Definition of stored value. We expect to use predefined value in enum:
+`seo` group is empty, so lets add some keys:
+
 ```
-use xGrz\LaravelAppSettings\Enums\SettingValueType;
+return [
+    // some existsing settings
+    'seo' => [
+        'google_gtm' => [
+            // definition of seo.google_gtm key
+        ],
+        'adwords_id' => [
+            // definition of seo.adwords_id
+        ]
+    ]
+]
 ```
 
-- **SettingValueType::Text** - string values,
-- **SettingValueType::Number** - numeric values,
-- **SettingValueType::Selectable** - string values in array,
-- **SettingValueType::BooleanType** - true/false values only,
+Each key should be defined with `value`, `description` and `type`. 
 
-### 2.2.2. `value` prop
-Define initial value for key depends on declared value type (string, int, float, array)
+`type` prop expecting to provide SettingValueType (enum `xGrz\LaravelAppSettings\Enums\SettingValueType`). 
+You can choose from:
+- SettingValueType::Text (string), 
+- SettingValueType::Number (integers, floats), 
+- SettingValueType::Selectable (array),  
+- SettingValueType::BooleanType (boolean values),
 
-### 2.2.3. `description` prop
-String value that describes defined key. Optional, but recommended.
+`value` prop is an initial value for key and must be valid for defined type of setting value.
 
+`description` optional prop. Helpful when you administrate your settings with user interface.
 
-## 2.3. Adding/remove settings entries 
+Your config should look like:
 
-Just add / remove any group or key-name(s) in your `app/config/laravel-app-settings-definitions.php`.
-After changes are made just run in console:
+```
+return [
+    // some existsing settings
+    'seo' => [
+        'google_gtm' => [
+            'value' => '',
+            'type' => SettingValueType::Text,
+            'description' => 'Google Tag Manager'
+        ],
+        'adwords_id' => [
+            'value' => 123093093,
+            'type' => SettingValueType::Number,
+            'description' => 'Google adwords id'
+        ]
+    ]
+]
+```
+
+> **Remember to sync settings after editing definitions file**
+>> php artisan app-settings:sync
+
+## 4.2. Remove settings
+
+Delete key name or whole group from definition file and run sync
 
 ```
 php artisan app-settings:sync
 ```
 
-# 3. Managing settings in your code.
 
-> Each setting has its own key (mentioned in 2.1).
+## 5. Settings sync after database refresh (seeder).
 
-# 3.1. Get value for setting
-Let's say you want to get `application.name` value. In your code you can call:
-
-```
-use xGrz\LaravelAppSettings\Support\Facades\Settings;
-
-// ...
-Settings::get('application.name`);
-```
-
-or use global helper function:
-
-```
-setting('application.name');
-```
-
-
-
-
-
-
-## Working with Local/Dev environment
-
-### Seeding database with settings
-
-In local/dev environment you can use our seeder class to sync settings each time you
-use `artisan migrate:fresh --seed`.
-That prevents you to run sync command each time database is refreshed.
-
-If you want to enable this feature just add
-`$this->call(xGrz\LaravelAppSettings\Database\Seeders\LaravelAppSettingsSeeder::class);`
-into your `Database\Seeders\DatabaseSeeder` class (in run method). It should look like:
+Everytime you refresh your database you have to run sync (`php artisan app-settings:sync`) to get back your initial settings.
+Typically, you want the application to be ready for use after clearing the database, so you can automate this process by adding Seeder.
 
 ```
 <?php
@@ -170,8 +193,8 @@ class DatabaseSeeder extends Seeder
         // ... [other seeders]
     }
 }
-
-
-
 ```
+
+
+
 
