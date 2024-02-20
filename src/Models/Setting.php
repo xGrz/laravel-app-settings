@@ -76,7 +76,7 @@ class Setting extends Model
         }
     }
 
-    public function getViewableValueAttribute(): string
+    public function getViewableValueAttribute(): ?string
     {
         if (empty($this->type)) return $this->value;
         return match ($this->type) {

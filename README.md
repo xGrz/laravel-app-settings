@@ -20,14 +20,14 @@ composer require xgrz/laravel-app-settings
 php artisan app-settings:publish
 ```
 
-After publishing, you will find 2 config files in your `app/config` directory.
+After publishing, you will find 2 config files in your app `/config` directory.
 
 - `laravel-app-settings-config` contains package configuration
 - `laravel-app-settings-definitions` contains settings definitions
 
 **Set database table name (before next step)**
 
-Fill free to update `app/config/laravel-app-settings-config.php` -> `database_table` in case on conflict with your database
+Fill free to update `/config/laravel-app-settings-config.php` -> `database_table` in case on conflict with your database
 schema.
 Default table name is set to `settings`.
 
@@ -38,7 +38,7 @@ php artisan migrate
 
 **Config and sync settings**
 
-Edit your `app/config/laravel-app-settings-definitions` file with your own settings.
+Edit your `/config/laravel-app-settings-definitions` file with your own settings.
 After all changes are made you have to run sync command in terminal
 
 ``` 
@@ -92,7 +92,7 @@ Out of the box you can use our FormRequest to validate incoming update data in y
 
 ### 4.1 Add settings
 
-Go to `app/config/laravel-app-settings-definitions.php`.
+Go to `/config/laravel-app-settings-definitions.php`.
 In this config file you will see tree of defined groups and settings.
 You are allowed to add new groups and key-names. You can always remove key-name/group from definition file at any time.
 
@@ -170,7 +170,6 @@ Delete key name or whole group from definition file and run sync
 ```
 php artisan app-settings:sync
 ```
-
 
 ## 5. Settings sync after database refresh (seeder).
 
