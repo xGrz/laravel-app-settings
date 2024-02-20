@@ -78,7 +78,9 @@ class SyncService
         $sourceKeys = (new Collection($sourceSettings))->map(fn($source) => $source['key']);
 
         // remove keys when not in source config file
-        $outdatedSettings = Setting::whereNotIn('key', $sourceKeys)->get('key')->toArray();
+        $outdatedSettings = Setting::whereNotIn('key', $sourceKeys)->get('key')
+            ->map(fn($setting) => $setting->key);
+
         Setting::whereIn('key', $outdatedSettings)->delete();
 
         // update/create current settings
