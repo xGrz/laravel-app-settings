@@ -12,16 +12,18 @@ use xGrz\LaravelAppSettings\Support\Facades\Config;
 
 Route::name('laravel-app-settings.')
     ->middleware(['web'])
-    ->group(function() {
-        Route::get(Config::getRoute(), fn() => to_route('laravel-app-settings.listing.index'));
+    ->group(function () {
+        Route::get(Config::getRouteUri(''), function () {
+            return to_route('laravel-app-settings.listing.index');
+        })->name('index');
 
-        Route::get(Config::getRoute('listing'), SettingsListingController::class)->name('listing.index');
-        Route::get(Config::getRoute('resource/listing'), ApiSettingsListingController::class)->name('resource.listing');
+        Route::get(Config::getRouteUri('listing'), SettingsListingController::class)->name('listing.index');
+        Route::get(Config::getRouteUri('resource/listing'), ApiSettingsListingController::class)->name('resource.listing');
 
-        Route::get(Config::getRoute('grouped'), SettingsGroupedController::class)->name('grouped.index');
-        Route::get(Config::getRoute('resource/grouped'), ApiSettingsGroupedController::class)->name('resource.grouped');
+        Route::get(Config::getRouteUri('grouped'), SettingsGroupedController::class)->name('grouped.index');
+        Route::get(Config::getRouteUri('resource/grouped'), ApiSettingsGroupedController::class)->name('resource.grouped');
 
-        Route::get(Config::getRoute('{setting}/edit'), EditSettingController::class)->name('edit');
-        Route::patch(Config::getRoute('{setting}/edit'), UpdateSettingController::class)->name('update');
+        Route::get(Config::getRouteUri('{setting}/edit'), EditSettingController::class)->name('edit');
+        Route::patch(Config::getRouteUri('{setting}/edit'), UpdateSettingController::class)->name('update');
     });
 

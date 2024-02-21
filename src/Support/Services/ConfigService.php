@@ -42,7 +42,7 @@ class ConfigService
         }
 
         if (isset($config['route_uri'])) {
-            $this->expose_ui = $config['route_uri'];
+            $this->route_prefix = $config['route_uri'];
         }
 
         if (isset($config['cache']['key'])) {
