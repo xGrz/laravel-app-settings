@@ -4,6 +4,7 @@ namespace xGrz\LaravelAppSettings\Commands;
 
 use Illuminate\Console\Command;
 use xGrz\LaravelAppSettings\Exceptions\LaravelSettingsSourceFileMissingException;
+use xGrz\LaravelAppSettings\Support\Facades\Settings;
 use xGrz\LaravelAppSettings\Support\Services\ConfigService;
 use xGrz\LaravelAppSettings\Support\Services\SyncService;
 
@@ -12,7 +13,7 @@ class SyncCommand extends Command
     protected $signature = ConfigService::ARTISAN_CALLOUT . ':sync';
     protected $description = 'Synchronize laravel settings config definitions with application';
 
-    public function handle()
+    public function handle(): int
     {
         $this->newLine();
         try {
@@ -28,6 +29,7 @@ class SyncCommand extends Command
 
         }
         $this->newLine();
+        Settings::invalidateCache();
 
         return Command::SUCCESS;
     }
