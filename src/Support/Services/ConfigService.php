@@ -12,6 +12,7 @@ class ConfigService
     private string $database_table = 'settings';
     private int $cache_timeout = 86400;
     private string $cache_key = 'LaravelSettings';
+    private string $route_prefix = 'laravel-app-settings';
 
 
     public function __construct()
@@ -38,6 +39,10 @@ class ConfigService
 
         if (isset($config['expose_ui'])) {
             $this->expose_ui = $config['expose_ui'];
+        }
+
+        if (isset($config['route_uri'])) {
+            $this->expose_ui = $config['route_uri'];
         }
 
         if (isset($config['cache']['key'])) {
@@ -79,10 +84,14 @@ class ConfigService
         return $this->database_table;
     }
 
-
     public function publish(): int
     {
         return Artisan::call('vendor:publish', ['--tag' => 'laravel-app-settings']);
+    }
+
+    public function getRouteUri(?string $suffix = null): string
+    {
+        return collect([$this->route_prefix, $suffix])->join('/');
     }
 
 

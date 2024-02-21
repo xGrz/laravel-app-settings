@@ -2,6 +2,7 @@
 
 namespace xGrz\LaravelAppSettings\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -14,6 +15,13 @@ class Setting extends Model
     protected $guarded = ['id', 'key'];
     protected $casts = ['type' => SettingValueType::class];
     protected $appends = ['viewableValue'];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('orderedByKey', function (Builder $builder) {
+            $builder->orderBy('key');
+        });
+    }
 
     public function getTable(): string
     {

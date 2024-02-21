@@ -13,6 +13,11 @@ return [
     'expose_ui' => false,
 
     /*
+     * When UI is exposed you can set route uri (suffixes will be added)
+     */
+    'route_uri' => 'laravel-app-settings',
+
+    /*
      * Cache configuration
      */
     'cache' => [

@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <form method="POST" action="{{ route('settings.update', $setting['id']) }}" class="bg-white shadow p-6 rounded">
+    <form method="POST" action="{{ route('laravel-app-settings.update', $setting['id']) }}" class="bg-white shadow p-6 rounded">
         @csrf
         <input name="_method" type="hidden" value="PATCH">
 

@@ -7,6 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SettingsResource extends JsonResource
 {
+    public function __construct($resource)
+    {
+        self::withoutWrapping();
+        parent::__construct($resource);
+    }
+
     /**
      * Transform the resource into an array.
      *

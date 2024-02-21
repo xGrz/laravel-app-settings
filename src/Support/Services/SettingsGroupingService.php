@@ -16,23 +16,15 @@ class SettingsGroupingService
      */
     public static function grouped(?string $groupName = null, string $model = Setting::class): Collection
     {
-        $settings = collect($model::orderBy('key')
-            ->when((bool)$groupName, fn($query) => $query->where('groupName', $groupName))
+        return $model::when((bool)$groupName, fn($query) => $query->where('groupName', $groupName))
             ->get()
             ->makeHidden('created_at', 'updated_at')
-            ->toArray()
-        );
-
-        return $settings
-            ->keyBy('groupName')
-            ->map(function ($group) use ($settings) {
-                return $settings
-                    ->filter(function ($settingItem) use ($group) {
-                        return $settingItem['groupName'] === $group['groupName'];
-                    })
-                    ->toArray();
-            })->when((bool)$groupName, function ($collection) use ($groupName) {
-                return $collection[$groupName] ?? null;
+            ->groupBy('groupName')
+            ->map(function ($settings, $groupName) {
+                return [
+                    'groupName' => $groupName,
+                    'settings' => $settings
+                ];
             });
     }
 }

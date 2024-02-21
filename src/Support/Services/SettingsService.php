@@ -29,8 +29,7 @@ class SettingsService
 
     private function settingsDirectRead()
     {
-        return Setting::orderBy('key')
-            ->get(['key', 'type', 'value'])
+        return Setting::all(['key', 'type', 'value'])
             ->makeHidden('type')
             ->toArray();
     }
@@ -64,9 +63,9 @@ class SettingsService
         return $this->settings;
     }
 
-    public function all()
+    public function all(): \Illuminate\Database\Eloquent\Collection
     {
-        return Setting::orderBy('key')->get();
+        return Setting::all();
     }
 
     public function getKeyValuePairsCollection(): Collection

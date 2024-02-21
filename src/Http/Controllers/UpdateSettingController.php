@@ -13,26 +13,9 @@ use xGrz\LaravelAppSettings\Http\Requests\UpdateSettingRequest;
 use xGrz\LaravelAppSettings\Models\Setting;
 use xGrz\LaravelAppSettings\Support\Facades\Settings;
 
-class SettingsController extends Controller
+class UpdateSettingController extends Controller
 {
-    public function index(): View
-    {
-        return view('laravel-app-settings::index', [
-            'title' => 'Laravel-App-Settings',
-            'settings' => Settings::all(),
-            'grouped' => Settings::getGroup()
-        ]);
-    }
-
-    public function edit(Setting $setting): View
-    {
-        return view('laravel-app-settings::edit', [
-            'title' => 'Edit key',
-            'setting' => $setting->toArray()
-        ]);
-    }
-
-    public function update(UpdateSettingRequest $request, Setting $setting): RedirectResponse
+    public function __invoke(UpdateSettingRequest $request, Setting $setting): RedirectResponse
     {
         try {
             $updated = Settings::update($setting, $request->validated());
@@ -41,7 +24,7 @@ class SettingsController extends Controller
         } catch (SettingValueValidationException $e) {
             abort(Response::HTTP_NOT_ACCEPTABLE, $e->getMessage());
         }
-        return to_route('settings.index')
+        return to_route('laravel-app-settings.index')
             ->with($updated
                 ? ['updated' => 'Updated']
                 : ['notChanged' => 'Nothing was changed']

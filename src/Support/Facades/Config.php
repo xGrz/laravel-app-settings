@@ -15,6 +15,7 @@ use xGrz\LaravelAppSettings\Support\Services\ConfigService;
  * @method static setConfiguration(string[]|array[] $testConfig)
  * @method static publish()
  * @method static shouldExposeUI()
+ * @method static getRouteUri(?string $urlSuffix)
  */
 
 class Config extends Facade
