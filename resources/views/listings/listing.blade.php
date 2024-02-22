@@ -6,28 +6,7 @@
 
 
 @section('content')
-
-    @if(session()->has('updated') || session()->has('notChanged'))
-        <div
-            x-data="{ show: {{Session::has('updated')}} }"
-            x-show="show"
-            x-init="setTimeout(() => show = false, 5000)"
-        >
-            <p class="p-2 bg-green-200 text-green-700 absolute top-0 right-0">
-                {{ session('updated') }}
-            </p>
-        </div>
-
-        <div
-            x-data="{ show: {{Session::has('notChanged')}} }"
-            x-show="show"
-            x-init="setTimeout(() => show = false, 5000)"
-        >
-            <p class="p-2 bg-orange-200 text-orange-700 absolute top-0 right-0">
-                {{ session('notChanged') }}
-            </p>
-        </div>
-    @endif
+    <x-laravel-app-settings::update-status />
 
     <div class="shadow-lg p-1 bg-white border-gray-200 border-1 rounded-md mb-4">
         <table class="w-full">

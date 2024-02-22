@@ -1,4 +1,4 @@
-@props(['type' => 'info'])
+@props(['type' => 'info', 'class' => ''])
 
 @php
     $typeClass = [
@@ -9,6 +9,6 @@
             ]
 @endphp
 
-<div class="p-4 mb-4 text-sm rounded-lg {{ $typeClass[$type] }}">
+<div {{ $attributes->merge(['class' => "p-4 mb-4 text-sm rounded-lg $typeClass[$type] $class"]) }}>
     {{ $slot }}
 </div>

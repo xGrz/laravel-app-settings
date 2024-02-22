@@ -6,27 +6,7 @@
 
 
 @section('content')
-    @if(session()->all())
-        <div
-            x-data="{ show: {{(bool) session('updated')}} }"
-            x-show="show"
-            x-init="setTimeout(() => show = false, 5000)"
-        >
-            <p class="p-2 bg-green-200 text-green-700 absolute top-0 right-0">
-                {{ session('updated') }}
-            </p>
-        </div>
-
-        <div
-            x-data="{ show: {{(bool) session('notChanged')}} }"
-            x-show="show"
-            x-init="setTimeout(() => show = false, 5000)"
-        >
-            <p class="p-2 bg-orange-200 text-orange-700 absolute top-0 right-0">
-                {{ session('notChanged') }}
-            </p>
-        </div>
-    @endif
+    <x-laravel-app-settings::update-status />
 
     @if ($grouped)
         <div class="shadow-lg p-1 bg-white border-gray-200 border-1 rounded-md mb-4">
