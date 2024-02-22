@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use xGrz\LaravelAppSettings\Http\Controllers\ApiSettingsListingController;
+use xGrz\LaravelAppSettings\Http\Controllers\CacheViewController;
 use xGrz\LaravelAppSettings\Http\Controllers\EditSettingController;
 use xGrz\LaravelAppSettings\Http\Controllers\SettingsGroupedController;
 use xGrz\LaravelAppSettings\Http\Controllers\SettingsListingController;
@@ -25,5 +26,7 @@ Route::name('laravel-app-settings.')
 
         Route::get(Config::getRouteUri('{setting}/edit'), EditSettingController::class)->name('edit');
         Route::patch(Config::getRouteUri('{setting}/edit'), UpdateSettingController::class)->name('update');
+
+        Route::get(Config::getRouteUri('{setting}/cache'), CacheViewController::class)->name('cache');
     });
 

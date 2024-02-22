@@ -79,6 +79,11 @@ class ConfigService
         return $this->expose_ui;
     }
 
+    public function usesCache(): bool
+    {
+        return (bool) $this->cache_timeout;
+    }
+
     public function getDatabaseTableName(): string
     {
         return $this->database_table;

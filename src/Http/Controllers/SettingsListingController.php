@@ -17,7 +17,7 @@ class SettingsListingController extends Controller
 {
     public function __invoke(): View
     {
-        return view('laravel-app-settings::listing.listing-index', [
+        return view('laravel-app-settings::listings.listing', [
             'title' => 'Laravel-App-Settings listing',
             'settings' => Settings::all(),
         ]);

@@ -19,18 +19,23 @@ class SettingsService
 
     public function loadSettings(): array
     {
-        $this->settings = cache()->remember(
-            Config::getCacheKey(),
-            Config::getCacheTimeout(),
-            fn() => self::settingsDirectRead()
-        );
+        if (!Config::getCacheTimeout()) {
+            $this->settings = self::settingsDirectRead();
+        } else {
+            $this->settings = cache()->remember(
+                Config::getCacheKey(),
+                Config::getCacheTimeout(),
+                fn() => self::settingsDirectRead()
+            );
+        }
+
         return $this->settings;
     }
 
-    private function settingsDirectRead()
+    private function settingsDirectRead(): array
     {
         return Setting::all(['key', 'type', 'value'])
-            ->makeHidden('type')
+            ->makeHidden(['type', 'viewableValue'])
             ->toArray();
     }
 
@@ -72,8 +77,7 @@ class SettingsService
     {
         return collect($this->settings)
             ->keyBy('key')
-            ->map(fn($item) => $item['value'])
-            ;
+            ->map(fn($item) => $item['value']);
     }
 
 }

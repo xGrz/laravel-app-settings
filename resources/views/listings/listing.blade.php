@@ -6,9 +6,10 @@
 
 
 @section('content')
-    @if(session()->all())
+
+    @if(session()->has('updated') || session()->has('notChanged'))
         <div
-            x-data="{ show: {{(bool) session('updated')}} }"
+            x-data="{ show: {{Session::has('updated')}} }"
             x-show="show"
             x-init="setTimeout(() => show = false, 5000)"
         >
@@ -18,7 +19,7 @@
         </div>
 
         <div
-            x-data="{ show: {{(bool) session('notChanged')}} }"
+            x-data="{ show: {{Session::has('notChanged')}} }"
             x-show="show"
             x-init="setTimeout(() => show = false, 5000)"
         >
@@ -35,28 +36,13 @@
                 <th class="text-left px-1">Setting key (generated)</th>
                 <th class="text-left px-1">Description</th>
                 <th class="text-left px-1">Value(s)</th>
+                <th class="text-right px-1">Cache View</th>
                 <th class="text-right px-1">Options</th>
             </tr>
             </thead>
             <tbody>
             @foreach($settings as $setting)
-                <tr class="hover:bg-gray-100">
-                    <td class="px-1">{{ $setting['key'] }}</td>
-                    <td class="px-1">{{ $setting['description'] }}</td>
-                    <td class="px-1">
-                        @if(is_array(($setting['viewableValue'])))
-                            @php
-                                echo join(', ', $setting['viewableValue'])
-                            @endphp
-                        @else
-                            {{ $setting['viewableValue'] }}
-                        @endif
-                    </td>
-                    <td class="text-right px-1">
-                        <a href="{{ route('laravel-app-settings.edit', $setting['id']) }}"
-                           class="text-blue-400 hover:text-blue-600 mx-2">Change</a>
-                    </td>
-                </tr>
+                <x-laravel-app-settings::listing-row :setting="$setting" />
             @endforeach
             </tbody>
         </table>

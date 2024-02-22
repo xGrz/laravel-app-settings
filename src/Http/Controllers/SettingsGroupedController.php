@@ -17,7 +17,7 @@ class SettingsGroupedController extends Controller
 {
     public function __invoke(): View
     {
-        return view('laravel-app-settings::grouped.grouped-index', [
+        return view('laravel-app-settings::listings.grouped', [
             'title' => 'Laravel-App-Settings divided by groups',
             'grouped' => Settings::getGroup()
         ]);
