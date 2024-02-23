@@ -1,7 +1,7 @@
 @extends('laravel-app-settings::layout')
 
 @section('breadcrumbs')
-    <a href="/{{ $backRoute }}">Back</a>
+    <a href="/{{ $backRoute }}" class="text-blue-600 hover:text-blue-800">Back</a>
 @endsection
 
 @section('content')
