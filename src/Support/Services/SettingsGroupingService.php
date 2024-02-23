@@ -16,7 +16,7 @@ class SettingsGroupingService
      */
     public static function grouped(?string $groupName = null, string $model = Setting::class): Collection
     {
-        return $model::when((bool)$groupName, fn($query) => $query->where('groupName', $groupName))
+        $collection =  $model::when((bool)$groupName, fn($query) => $query->where('groupName', $groupName))
             ->get()
             ->makeHidden('created_at', 'updated_at')
             ->groupBy('groupName')
@@ -26,5 +26,7 @@ class SettingsGroupingService
                     'settings' => $settings
                 ];
             });
+
+        return $collection->values();
     }
 }
