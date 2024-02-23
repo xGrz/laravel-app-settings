@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Session;
-use Illuminate\View\View;
 use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
 use xGrz\LaravelAppSettings\Exceptions\SettingValueValidationException;
 use xGrz\LaravelAppSettings\Http\Requests\UpdateSettingRequest;
@@ -25,6 +23,10 @@ class UpdateSettingController extends Controller
         } catch (SettingValueValidationException $e) {
             abort(Response::HTTP_NOT_ACCEPTABLE, $e->getMessage());
         }
+
+        // THIS SHOULD BACK TO GROUPED/LISTING
+        // FIX TESTs
+
         return to_route('laravel-app-settings.grouped.index')
             ->with($updated
                 ? ['updated' => 'Updated']

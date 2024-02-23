@@ -1,4 +1,4 @@
-@props(['setting'])
+@props(['setting', 'listingType' => 'listing'])
 
 <tr class="hover:bg-gray-100">
     <td class="px-1">{{ $setting['key'] }}</td>
@@ -13,7 +13,7 @@
         @endif
     </td>
     <td class="text-right px-1">
-        <a href="{{ route('laravel-app-settings.cache', $setting['id']) }}"
+        <a href="{{ route('laravel-app-settings.cache', $setting['id']) . "?listingType=$listingType" }}"
            class="text-blue-400 hover:text-blue-600 mx-2">Cache</a>
     </td>
     <td class="text-right px-1">

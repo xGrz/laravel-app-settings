@@ -1,5 +1,8 @@
 @extends('laravel-app-settings::layout')
 
+@section('breadcrumbs')
+    <a href="/{{ $backRoute }}">Back</a>
+@endsection
 
 @section('content')
 

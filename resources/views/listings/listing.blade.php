@@ -1,7 +1,7 @@
 @extends('laravel-app-settings::layout')
 
 @section('breadcrumbs')
-    <a href="{{route('laravel-app-settings.grouped.index')}}" class="text-blue-600 hover:text-blue-800">Switch to grouped list</a>
+    <a href="{{route('laravel-app-settings.grouped')}}" class="text-blue-600 hover:text-blue-800">Switch to grouped list</a>
 @endsection
 
 

@@ -1,7 +1,7 @@
 @extends('laravel-app-settings::layout')
 
 @section('breadcrumbs')
-    <a href="{{route('laravel-app-settings.listing.index')}}" class="text-blue-600 hover:text-blue-800">Switch to listing</a>
+    <a href="{{route('laravel-app-settings.listing')}}" class="text-blue-600 hover:text-blue-800">Switch to listing</a>
 @endsection
 
 
