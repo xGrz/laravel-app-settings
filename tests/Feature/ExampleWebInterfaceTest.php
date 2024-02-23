@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\View;
 use Tests\TestCase;
 use xGrz\LaravelAppSettings\Enums\SettingValueType;
 use xGrz\LaravelAppSettings\Models\Setting;
@@ -20,19 +19,44 @@ class ExampleWebInterfaceTest extends TestCase
         SyncService::sync();
     }
 
-    public function test_index_page_is_rendering()
+
+    public function test_module_main_page_redirects_to_listing()
+    {
+        if (!Config::shouldExposeUI()) return;
+
+        $this
+            ->get(route('laravel-app-settings.index'))
+            ->assertRedirect(route('laravel-app-settings.listing'));
+    }
+
+    public function test_listing_page_is_rendering()
     {
         if (!Config::shouldExposeUI()) return;
         $setting = Setting::where('type', SettingValueType::Text)->first();
 
         $this
-            ->get(route('settings.index'))
+            ->get(route('laravel-app-settings.listing'))
             ->assertStatus(200)
             ->assertSee('Laravel-App-Settings')
             ->assertSee($setting->key)
             ->assertSee($setting->value);
 
     }
+
+    public function test_grouped_page_is_rendering()
+    {
+        if (!Config::shouldExposeUI()) return;
+        $setting = Setting::where('type', SettingValueType::Text)->first();
+
+        $this
+            ->get(route('laravel-app-settings.grouped'))
+            ->assertStatus(200)
+            ->assertSee('Laravel-App-Settings')
+            ->assertSee($setting->key)
+            ->assertSee($setting->value);
+
+    }
+
 
     public function test_update_setting_value()
     {
@@ -44,9 +68,9 @@ class ExampleWebInterfaceTest extends TestCase
         ];
 
         $this
-            ->from(route('settings.edit', $setting))
-            ->patch(route('settings.update', $setting), $testData)
-            ->assertRedirectToRoute('settings.index');
+            ->from(route('laravel-app-settings.edit', $setting))
+            ->patch(route('laravel-app-settings.update', $setting), $testData)
+            ->assertRedirectToRoute('laravel-app-settings.grouped');
 
         $this->assertDatabaseHas(Config::getDatabaseTableName(), $testData);
     }
@@ -61,10 +85,10 @@ class ExampleWebInterfaceTest extends TestCase
         ];
 
         $this
-            ->from(route('settings.edit', $setting))
-            ->patch(route('settings.update', $setting), $testData)
+            ->from(route('laravel-app-settings.edit', $setting))
+            ->patch(route('laravel-app-settings.update', $setting), $testData)
             ->assertSessionHasErrors()
-            ->assertRedirect(route('settings.edit', $setting));
+            ->assertRedirect(route('laravel-app-settings.edit', $setting));
 
         $setting2 = Setting::where('type', SettingValueType::Text)->first();
 
@@ -78,9 +102,9 @@ class ExampleWebInterfaceTest extends TestCase
         $setting = Setting::where('type', SettingValueType::Text)->first();
 
         $this
-            ->get(route('settings.edit', $setting))
+            ->get(route('laravel-app-settings.edit', $setting))
             ->assertStatus(200)
-            ->assertViewIs('laravel-app-settings::edit')
+            ->assertViewIs('laravel-app-settings::edit.edit')
             ->assertSee('Edit key')
             ->assertSee($setting->key)
             ->assertSee($setting->value);
@@ -92,9 +116,9 @@ class ExampleWebInterfaceTest extends TestCase
         $setting = Setting::where('type', SettingValueType::Number)->first();
 
         $this
-            ->get(route('settings.edit', $setting))
+            ->get(route('laravel-app-settings.edit', $setting))
             ->assertStatus(200)
-            ->assertViewIs('laravel-app-settings::edit')
+            ->assertViewIs('laravel-app-settings::edit.edit')
             ->assertSee('Edit key')
             ->assertSee($setting->key)
             ->assertSee($setting->value);
@@ -106,9 +130,9 @@ class ExampleWebInterfaceTest extends TestCase
         $setting = Setting::where('type', SettingValueType::Selectable)->first();
 
         $this
-            ->get(route('settings.edit', $setting))
+            ->get(route('laravel-app-settings.edit', $setting))
             ->assertStatus(200)
-            ->assertViewIs('laravel-app-settings::edit')
+            ->assertViewIs('laravel-app-settings::edit.edit')
             ->assertSee('Edit key')
             ->assertSee($setting->key)
             ->assertSee($setting->value);
@@ -120,9 +144,9 @@ class ExampleWebInterfaceTest extends TestCase
         $setting = Setting::where('type', SettingValueType::BooleanType)->first();
 
         $this
-            ->get(route('settings.edit', $setting))
+            ->get(route('laravel-app-settings.edit', $setting))
             ->assertStatus(200)
-            ->assertViewIs('laravel-app-settings::edit')
+            ->assertViewIs('laravel-app-settings::edit.edit')
             ->assertSee('Edit key')
             ->assertSee($setting->key)
             ->assertSee($setting->value)
@@ -138,9 +162,9 @@ class ExampleWebInterfaceTest extends TestCase
         $testData = ['value' => null];
 
         $this
-            ->from(route('settings.edit', $setting->id))
-            ->patch(route('settings.update', $setting->id), $testData)
-            ->assertRedirectToRoute('settings.index');
+            ->from(route('laravel-app-settings.edit', $setting->id))
+            ->patch(route('laravel-app-settings.update', $setting->id), $testData)
+            ->assertRedirectToRoute('laravel-app-settings.grouped');
     }
 
 }
