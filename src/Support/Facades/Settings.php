@@ -2,12 +2,12 @@
 
 namespace xGrz\LaravelAppSettings\Support\Facades;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 use xGrz\LaravelAppSettings\Exceptions\SettingsKeyNotFoundException;
 use xGrz\LaravelAppSettings\Exceptions\SettingValueValidationException;
 use xGrz\LaravelAppSettings\Models\Setting;
-use xGrz\LaravelAppSettings\Support\Helpers\SettingResolver;
 use xGrz\LaravelAppSettings\Support\Services\SettingsGroupingService;
 use xGrz\LaravelAppSettings\Support\Services\SettingsService;
 use xGrz\LaravelAppSettings\Support\Services\StoreSettingService;
@@ -60,13 +60,12 @@ class Settings extends Facade
      * When groupName im empty this method will return all settings divided in sections by groupName )
      *
      * @param string|null $groupName
-     * @param string $model
+     * @param Builder|null $query
      * @return Collection
      */
-    public static function getGroup(?string $groupName = null, string $model = Setting::class): Collection
+    public static function getGroup(?string $groupName = null, ?Builder $query = null): Collection
     {
-        return SettingsGroupingService::grouped($groupName, $model);
+        return SettingsGroupingService::grouped($groupName, $query);
     }
-
 
 }
