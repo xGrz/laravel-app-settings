@@ -23,7 +23,7 @@ return [
     'cache' => [
         /*
          * Set cache timeout for settings (in seconds)
-         * You can set to null/false to disable cache
+         * You can set false to disable cache
          */
         'timeout' => 86400,
 
