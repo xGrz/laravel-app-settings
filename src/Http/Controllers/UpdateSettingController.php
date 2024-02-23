@@ -24,10 +24,8 @@ class UpdateSettingController extends Controller
             abort(Response::HTTP_NOT_ACCEPTABLE, $e->getMessage());
         }
 
-        // THIS SHOULD BACK TO GROUPED/LISTING
-        // FIX TESTs
 
-        return to_route('laravel-app-settings.grouped.index')
+        return to_route('laravel-app-settings.grouped')
             ->with($updated
                 ? ['updated' => 'Updated']
                 : ['notChanged' => 'Nothing was changed']
