@@ -12,15 +12,15 @@ class SettingsGroupingService
      * Groups settings by GroupName. When $groupName is provided return only this group settings
      *
      * @param string|null $groupName
-     * @param Builder|null $query
+     * @param Builder|null $queryBuilder
      * @return Collection
      */
-    public static function grouped(?string $groupName = null, ?Builder $query = null): Collection
+    public static function grouped(?string $groupName = null, ?Builder $queryBuilder = null): Collection
     {
-        if (!$query) $query = Setting::query();
+        if (!$queryBuilder) $queryBuilder = Setting::query();
 
-        $collection = $query
-            ->when((bool)$groupName, fn($query) => $query->where('groupName', $groupName))
+        $collection = $queryBuilder
+            ->when((bool)$groupName, fn($query) => $queryBuilder->where('groupName', $groupName))
             ->get()
             ->makeHidden('created_at', 'updated_at')
             ->groupBy('groupName')

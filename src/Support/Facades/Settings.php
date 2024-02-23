@@ -60,12 +60,12 @@ class Settings extends Facade
      * When groupName im empty this method will return all settings divided in sections by groupName )
      *
      * @param string|null $groupName
-     * @param Builder|null $query
+     * @param Builder|null $queryBuilder
      * @return Collection
      */
-    public static function getGroup(?string $groupName = null, ?Builder $query = null): Collection
+    public static function getGroup(?string $groupName = null, ?Builder $queryBuilder = null): Collection
     {
-        return SettingsGroupingService::grouped($groupName, $query);
+        return SettingsGroupingService::grouped($groupName, $queryBuilder);
     }
 
 }
