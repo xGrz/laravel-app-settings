@@ -16,7 +16,7 @@ use xGrz\LaravelAppSettings\Support\Services\StoreSettingService;
  * @method static loadSettings()
  * @method static invalidateCache()
  * @method static refreshCache()
- * @method static get(string $key)
+ * @method static getVersion(string $key)
  * @method static getAll()
  * @method static all()
  */
